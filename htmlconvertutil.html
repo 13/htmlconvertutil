@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <style>
+      html, body, .container {
+        height: 100%;
+      }
+      textarea.mirror {
+        height: 100%;
+      }
+      .fill {
+        min-height:100%;
+	height:100%;
+      }
+    </style>
+  </head>
+  <body>
+    <a id="btn_convert_de" href="#" type="button" class="btn btn-primary btn-block">Convert DE<span class="glyphicon glyphicon-play"></a>
+    <a id="btn_convert_it" href="#" type="button" class="btn btn-primary btn-block">Convert IT<span class="glyphicon glyphicon-play"></a>
+    <div class="container-fluid fill">
+      <div class="row">
+        <div class="col-lg-6">
+          <textarea id="input" class="form-control mirror" rows="32"></textarea>
+	</div>
+        <div class="col-lg-6">
+          <textarea id="output" class="form-control mirror" rows="32"></textarea>
+	</div>
+      </div>
+    </div>
+  </body>
+  <script>
+  $("a#btn_convert_de,a#btn_convert_it").click(function(e) {
+    e.preventDefault();
+    console.log("Showing");
+    $('#output').val('');
+    var input = $('textarea#input').val();
+    input = input.replace(/^(?=\n)$|^\s*|\s*$|\n\n+/gm,"");
+    var lines = input.split('\n');
+    
+    var cnvrt = ["Name","Nome","Gebühr","Tariffa"];
+    if (this.id == "btn_convert_de"){
+      head1_str = cnvrt[0];
+      head2_str = cnvrt[2];
+    } else {
+      head1_str = cnvrt[1];
+      head2_str = cnvrt[3];
+    }
+
+    var head = '<table summary="noname">\n<thead>\n<tr>\n' +
+               '<th>'+head1_str+'</th>\n' +
+               '<th>'+head2_str+'</th>\n' +
+               '</tr>\n</thead>\n<tbody>\n'
+    $('#output').val($('#output').val()+head);
+    var evenflag = 1;
+    for(var i = 0;i < lines.length;i++){
+      if (evenflag == 1) {
+        evenflag = 0;
+	even_str = "even"
+      } else {
+        evenflag = 1;
+	even_str = "odd";
+      }
+      $('#output').val($('#output').val()+'\n<tr class=\"'+even_str+'\">\n');
+      $('#output').val($('#output').val()+'<td>'+lines[i]+'</td>\n');
+      $('#output').val($('#output').val()+'<td>'+lines[i+1]+'</td>\n');
+      $('#output').val($('#output').val()+'</tr>\n');
+      i++;
+    }
+    $('#output').val($('#output').val()+'</tbody>\n</table>\n');
+  });
+  </script>
+</html>
