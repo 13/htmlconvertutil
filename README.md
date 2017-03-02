@@ -1,2 +1,2 @@
 # htmlconvertutility
-A JQuery Bootstrap HTML conversion utility
+A Javascript HTML conversion utility
